@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+        }
+        #mycanvas{
+            margin-left: 400px;
+            border: 1px solid red;
+            background-color: #3C3F41;
+        }
+        #dis{
+            width: 402px;
+            height: 602px;
+            position: absolute;
+            top: 0;
+            left: 400px;
+            z-index: 100;
+            background-color: yellow;
+            opacity: 0.3;
+            display: none;
+        }
+        #score {
+            width: 80px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            color:black;
+            background-color: #478054;
+            position: absolute;
+            top: 20px;
+            left: 300px;
+            font-size: 18px;
+        }
+        .begain{
+            margin-top: 150px;
+            margin-left: 120px;
+            font-size: 1cm;
+            color: white;
+
+        }
+        .return{
+            margin-top: 200px;
+            margin-left: 120px;
+            font-size: 1cm;
+            color: white;
+        }
+        a{
+            text-decoration:none;
+            color:black;
+            
+        }
+    </style>
+</head>
+<body>
+<canvas width="400px" height="600px" id="mycanvas" onclick="xz()"></canvas>
+<div id="score">0</div>
+<div id="dis">
+    <div class="begain"><a href="">重新开始</a> </div>
+    <div class="return"><a href="youxikaishi.html">返回首页</a></div>
+</div>
+<script type="text/javascript">
+    var mycanvas=document.getElementById("mycanvas");
+    var ctx=mycanvas.getContext('2d');
+    var score = document.getElementById('score');
+    var angle = 0;
+    var timer;
+    var starttimer;
+    var count = 0;
+    var balls = [];
+    var stateColor;
+    var stateColorR;
+    var state;
+    function Ball(color,x,y){
+        this.x = x;
+        this.y = y;
+        ctx.save();
+        ctx.translate(200,300);
+        ctx.rotate(angle*Math.PI/180);
+        ctx.beginPath();
+        ctx.fillStyle=color;
+        ctx.arc(this.x,this.y,30,0,360*Math.PI/180,false);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fill();
+        ctx.restore();
+    }
+
+    function level(){
+        var score = document.getElementById('score').innerHTML;
+        if(score>=20){
+            balls = [['black',0,-42.42],['white',-42.42,0],['yellow',0,42.42],['red',42.42,0]];
+        }else if(score >= 10){
+//                        balls = [['black',0,33.5],['red',30,-20],['white',-30,-20]]
+//                        balls = [['black',0,33.5],['red',30,-20],['white',-30,-20]];
+//                        balls = [['black',-30,-20],['red',0,33.5],['white',30,-20]]
+            balls = [['red',-30,-20],['black',0,33.5],['white',30,-20]]
+        }else {
+            balls = [['black',0,-30],['white',0,30]];
+        }
+    }
+    stateColor = 'black';
+
+    function createBall(){
+        for(var i = 0 ; i < balls.length ; i++){
+            var ball = new Ball(balls[i][0],balls[i][1],balls[i][2])
+        }
+    }
+
+    var smallBall = [];
+    var num = balls.length;
+    function SmallBall(y,Vy,color){
+        this.y = y;
+        this.color = color;
+        this.Vy = Vy;
+        this.isCrashed = false;
+        this.move = function(){
+            this.y += this.Vy;
+            this.draw();
+        };
+        this.draw = function(){
+            ctx.save();
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(200,this.y,8,0,360);
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+    function createSmallBall(){
+        var num = balls.length;
+        var color;
+        var suiji = parseInt(Math.random()*num)+1;
+        switch (suiji) {
+            case 1: color = 'white'; break;
+            case 2: color = 'black'; break;
+            case 3: color = 'red'; break;
+            case 4: color = 'yellow'; break;
+        }
+        switch (num) {
+            case 2:
+                var small = new SmallBall(0,1,color);
+                break;
+            case 3:
+                var small = new SmallBall(600,-1,color);
+                break;
+            case 4:
+                var dir = parseInt(Math.random()*2);
+                if(dir == 0){
+                    var small = new SmallBall(600,-1,color);
+                }else {
+                    var small = new SmallBall(0,1,color);
+                }
+
+                break;
+        }
+        smallBall.push(small);
+    }
+    function smallMove(){
+        for(var i = 0 ; i < smallBall.length; i++){
+            if(!smallBall[i].isCrashed) {
+                smallBall[i].move();
+            }
+        }
+    }
+    function crash(){
+        for(var i = 0 ; i < balls.length ; i++){
+            for(var j = 0 ; j < smallBall.length ; j++){
+                var b = balls[i];
+                var s = smallBall[j];
+                var num = balls.length;
+                switch (num) {
+                    case 2:
+                        if(s.y>=234&& !s.isCrashed){
+                            s.isCrashed = true;
+                            if(s.color == stateColor){
+                                score.innerHTML = parseInt(score.innerHTML)+2
+                            }else {
+                                gameOver();
+                            }
+                        }
+                        break;
+                    case 3:
+                        if(s.y<= 372&&!s.isCrashed){
+                            s.isCrashed = true;
+                            if(s.color == stateColor){
+                                score.innerHTML = parseInt(score.innerHTML)+2
+                            }else {
+                                gameOver();
+                            }
+                        }
+                        break;
+                    case 4:
+                        if(s.Vy == 1 && s.y>=220 && !s.isCrashed){
+                            s.isCrashed = true;
+                            if(s.color == stateColor){
+                                score.innerHTML = parseInt(score.innerHTML)+2
+                            }else {
+                                gameOver();
+                            }
+                        }else if(s.Vy==-1 && s.y <= 380 && !s.isCrashed){
+                            s.isCrashed = true;
+                            if(s.color == stateColorR){
+                                score.innerHTML = parseInt(score.innerHTML)+2
+                            }else {
+                                gameOver();
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
+    function xz(){
+        clearInterval(timer);
+        clearInterval(starttimer);
+        var promise = new Promise(function(resolve,reject){
+            timer = setInterval(function(){
+                ctx.clearRect(0,0,400,600);
+                count++;
+                angle+=5;
+                level();
+                start();
+                smallMove();
+                crash();
+
+                var per = 360/balls.length;
+                for(var i = 1 ; i <= balls.length ; i++){
+                    if(count==per/5*i){
+                        clearInterval(timer);
+                        starttimer = setInterval(function(){
+                            ctx.clearRect(0,0,400,600);
+                            level();
+                            start();
+                            smallMove();
+                            crash();
+                        },1)
+                    }
+                }
+                if(count == per/5*balls.length) {
+                    count = 0;
+                }
+            },1);
+            resolve();
+        });
+        promise.then(function(){
+            for(var i = 0 ; i < balls.length ; i++){
+                if(stateColor == balls[i][0]){
+                    if(i!=balls.length-1){
+                        stateColor = balls[i+1][0];
+                    }else {
+                        stateColor = balls[0][0];
+                    }
+                    break;
+                }
+            }
+            switch (stateColor) {
+                case 'black': stateColorR = 'yellow';break;
+                case 'yellow': stateColorR = 'black';break;
+                case 'red': stateColorR = 'white';break;
+                case 'white':stateColorR = 'red';break;
+            }
+
+        });
+    }
+    function start() {
+        createBall();
+    }
+    starttimer = setInterval(function(){
+        ctx.clearRect(0,0,400,600);
+        level();
+        start();
+        smallMove();
+        crash();
+    },1);
+    function gameOver(){
+        clearInterval(createSmallBall);
+        clearInterval(starttimer);
+        clearInterval(timer);
+        var dis = document.getElementById('dis');
+        dis.style.display = 'block';
+    }
+    setInterval(createSmallBall,2000);
+</script>
+</body>
+</html>

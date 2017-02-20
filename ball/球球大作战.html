@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>球球大作战</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        #round{
+            width: 40px;
+            height: 40px;
+            background-color: #4bda4c;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-top: -10px;
+            margin-left: -10px;
+        }
+        #tutorial{
+            background-image: url("img/game.png");
+            background-color: #222222;
+        }
+        #beiTU{
+            display: none;
+        }
+        #numDiv{
+            width: 120px;
+            height: 40px;
+            border: 4px solid #c0c0c0;
+            box-shadow: 0 0 4px 4px black;
+            text-align: center;
+            line-height: 40px;
+            background-color: black;
+            color: white;
+            position: absolute;
+            top: 60px;
+            left: 1258px;
+            display: none;
+        }
+        #num{
+            color: white;
+        }
+        #gameOver{
+            width: 1349px;
+            height: 700px;
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            background-color: rgba(238, 238, 238, 0.50);
+            text-align: center;
+            color: white;
+            display: none;
+        }
+        #gameOver>span{
+            font-size: 50px;
+            display: block;
+            margin-top: 150px;
+        }
+        #onlyNum{
+            color: red;
+        }
+        #historyNum{
+            color: red;
+        }
+        #gameOver_a{
+            width: 400px;
+            height: 150px;
+            border: 4px solid #c0c0c0;
+            background-color: black;
+            margin-left: 460px;
+            margin-top: 50px;
+        }
+        #chongWan{
+            width: 120px;
+            height: 40px;
+            line-height: 40px;
+            border: 2px solid #c0c0c0;
+            border-radius: 20px 20px 20px 20px;
+            margin-left: 610px;
+            margin-top: 20px;
+        }
+        #chongWan:hover{
+            cursor: pointer;
+        }
+        #tuiChu:hover{
+            cursor: pointer;
+        }
+        #tuiChu{
+            width: 120px;
+            height: 40px;
+            line-height: 40px;
+            border: 2px solid #c0c0c0;
+            border-radius: 20px 20px 20px 20px;
+            margin-left: 610px;
+            margin-top: 20px;
+        }
+        #startGame{
+            width: 1349px;
+            height: 700px;
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            background-color: rgba(238, 238, 238, 0.50);
+            text-align: center;
+            color: white;
+            display: block;
+        }
+        #letsGo{
+            width: 120px;
+            height: 40px;
+            line-height: 40px;
+            border: 2px solid #c0c0c0;
+            border-radius: 20px 20px 20px 20px;
+            margin-left: 610px;
+            margin-top: 50px;
+            cursor: pointer;
+        }
+        input[type="text"]{
+            margin-top: 50px;
+            outline: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            border-bottom: 1px solid white;
+            height: 40px;
+            font-size: 25px;
+            color: red;
+            background-color: transparent;
+        }
+        #gameName{
+            margin-top: 200px;
+            font-size: 50px;
+        }
+        #gameName_a{
+            color: #5dcbdb;
+        }
+        #em_a{
+            color: #4bda4c;
+        }
+        #em_b{
+            color: violet;
+        }
+        #em_c{
+            color: darkolivegreen;
+        }
+        #em_d{
+            color: coral;
+        }
+        #setName{
+            width: 300px;
+            height: 40px;
+            text-align: center;
+            font-size: 25px;
+            color: red;
+            margin-top: 60px;
+            position: absolute;
+            margin-left: 60px;
+            display: none;
+        }
+        #gongxi{
+            width: 1349px;
+            height: 60px;
+            text-align: center;
+            line-height: 60px;
+            font-size: 35px;
+            margin-left: 50px;
+            background-image: url("img/gongxi.gif");
+            display: none;
+        }
+        #gongxi>span:nth-child(1){
+            color: red;
+        }
+        #gongxi>span:nth-child(2){
+            color: yellow;
+        }
+        #guiZe{
+            text-align: left;
+            margin-left: 400px;
+            margin-top: 10px;
+            font-size: 25px;
+        }
+    </style>
+    <script type="text/javascript">
+        function eventwindowLoaded() {
+            canvasApp();
+        }
+        function  canvasApp() {
+            var gameOver_a = document.getElementById("gameOver");
+            var onlyNum_a = document.getElementById("onlyNum");
+            var numDiv = document.getElementById("numDiv");
+            numDiv.style.display = "block";
+            var chongWan = document.getElementById("chongWan");
+            chongWan.onclick = function(){
+                eventwindowLoaded();
+                gameOver_a.style.display = "none";
+            };
+            var tuiChu = document.getElementById("tuiChu");
+            tuiChu.onclick = function(){
+                if(confirm("您确定要退出游戏吗？")){
+                    window.opener=null;
+                    window.open('','_self');
+                    window.close();
+                }
+                else{}
+            };
+            var letsGo_a = document.getElementById("letsGo");
+            var startGame_a  = document.getElementById("startGame");
+            startGame_a.style.display = "none";
+            var getName_a = document.getElementById("getName").value;
+//            localStorage.setItem("Name",getName_a);
+//            var getName_a_a = localStorage.getItem("Name");
+            sessionStorage.setItem("Name",getName_a);
+            var getName_a_a = sessionStorage.getItem("Name");
+            var setName_a = document.getElementById("setName_a");
+            console.log(getName_a_a);
+            var setName = document.getElementById("setName");
+            setName_a.innerText = getName_a_a;
+            setName.style.display = "block";
+            var num_a = document.getElementById("num");
+            var beiTU = document.getElementById("beiTU");
+            var theCanvas = document.getElementById("tutorial");
+            var roundObj = document.getElementById("round");
+            var ctx = theCanvas.getContext("2d");
+            var numBalls = 20;
+            var numBall = 0;
+            var balls = new Array();
+            var bigBall = new Array();
+            var maxSize = 10;
+            var minSize = 5;
+            var maxSpeed = maxSize + 6;
+            var yunits = 0;
+            var tempBall;
+            var tempX;
+            var tempY;
+            var tempSpeed;
+            var tempAngle;
+            var tempRadius;
+            var tempRadians;
+            var tempXunits;
+            var tempYunits;
+            var tempColor;
+            var objQiuColor;
+            //小球每隔一段时间换色
+            var arrColor = ["red", "orange", "#5dcbdb", "green", "#4bda4c", "#48e8ba", "purple"];
+            var arrBigColor = ["orange", "red", "#5dcbdb", "green", "#4bda4c", "#48e8ba", "purple"];
+            var zJ = 0;
+            setInterval(function () {
+                zJ++;
+                if (zJ % 8 == 0) {
+                    numBall = numBalls;
+                    numBalls += 5;
+                    createBalls();
+                }
+            }, 1000);
+//            创建随机大小的小球与随机速度的小球
+            function createBalls() {
+                for (var i = numBall; i < numBalls; i++) {
+                    tempRadius = Math.floor(Math.random() * maxSize + minSize);
+                    tempX = tempRadius * 2 + (Math.floor(Math.random() * theCanvas.width) - tempRadius * 2);
+                    tempY = tempRadius * 2 + (Math.floor(Math.random() * theCanvas.height) - tempRadius * 2);
+                    tempSpeed = maxSpeed - tempRadius;
+                    tempAngle = Math.floor(Math.random() * 360);
+                    tempRadians = tempAngle * Math.PI / 180;
+                    tempXunits = Math.cos(tempRadians) * tempSpeed;
+                    tempYunits = Math.sin(tempRadians) * tempSpeed;
+                    tempColor = Math.round(Math.random()*7);
+                    tempBall = {
+                        x: tempX, y: tempY, radius: tempRadius, speed: tempSpeed,
+                        angle: tempAngle, xunits: tempXunits, yunits: tempYunits,tempId : i,
+                        color:tempColor
+                    };
+                    balls.push(tempBall);
+                }
+            }
+            createBalls();
+//            //删除表
+//            function dropData(){
+//                dataBase.transaction(function(db){
+//                    db.executeSql("DROP TABLE t_paiH")
+//                })
+//            }
+            var big_x=500;
+            var big_y=200;
+            var r=20;
+            var num_num=0;
+            var l=0;
+            var playerColor;
+            setInterval(function(){
+                l++;
+                if(l>=7){
+                    l=0;
+                }
+            },10000);
+            theCanvas.onmousemove = function(){
+                big_x = event.clientX-35;
+                big_y = event.clientY-50;
+            };
+//            画大球
+            var big;
+            function createBigball(){
+                playerColor = ctx.fillStyle  = arrBigColor[l];
+                ctx.beginPath();
+                ctx.arc(big_x,big_y,r,0, Math.PI * 2, true);
+                ctx.stroke();
+                ctx.fill();
+                ctx.closePath();
+                bigBall.push(big);
+            }
+//            排行榜webSql
+//            第一步创建数据库对象
+            var dataBase = openDatabase("ranking","","",1024*1024*10);
+//            var a=0;
+//            第二步连接数据库
+//            AUTO_INCREMENT
+            dataBase.transaction(function(db){
+                db.executeSql("create table if not exists u_paiH(t_name VARCHAR(50),t_num int)")
+            });
+            //                插入数据
+            function pHang(){
+                console.log(typeof setName.innerText);
+                console.log(typeof parseInt(num_a.innerText));
+                dataBase.transaction(function(db){
+//                    a++;
+                    db.executeSql("INSERT INTO u_paiH(t_name,t_num) VALUES(?,?)",[setName.innerText,parseInt(num_a.innerText)],function(trans,rs){
+                        console.log("正确信息"+rs);
+                    },function(trans,err){
+                        console.log("错误信息；"+err);
+                    })
+                });
+            }
+            //查询数据
+            function pHang_a(){
+                //同一玩家历史排名最高
+                dataBase.transaction(function(db){
+                    db.executeSql("SELECT t_name,MAX(t_num) FROM u_paiH GROUP BY t_name ORDER BY t_num DESC",[],function(trans,rs){
+                        console.log(rs.rows);
+                        for(var p=0;p<rs.rows.length;p++){
+                            if(setName.innerText == rs.rows.item(p).t_name){
+                                console.log(p);
+                                var historyNum = document.getElementById("historyNum");
+                                historyNum.innerText = "";
+                                historyNum.innerText = p+1;
+                            }
+                        }
+                    });
+                });
+                //同一玩家本次游戏排名
+                dataBase.transaction(function(db){
+                    db.executeSql("select * from u_paiH ORDER BY t_num DESC",[],function(trans,rs){
+                        console.log("2="+rs.rows);
+                        console.log("1="+rs.rows.item(0));
+                        for(var e=0;e<rs.rows.length;e++){
+                            
+                        }
+                    });
+                })
+            }
+            //画小球
+            function drawScreen() {
+                ctx.clearRect(0,0,1349,700);
+                var ball;
+                for (var i = 0; i < balls.length; i++) {
+                    ball = balls[i];
+                    ball.x += ball.xunits;
+                    ball.y += ball.yunits;
+                    ctx.beginPath();
+                    objQiuColor = ctx.fillStyle = arrColor[ball.color];
+                    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2, true);
+                    ctx.closePath();
+                    ctx.fill();
+                    //碰撞画布
+                    if (ball.x > theCanvas.width || ball.x < 0) {
+                        ball.angle = 180 - ball.angle;
+                        updateBall(ball);
+                    }
+                    else if (ball.y > theCanvas.height || ball.y < 0) {
+                        ball.angle = 360 - ball.angle;
+                        updateBall(ball);
+                    }
+                    //球球碰撞
+                    var ball_x = parseInt(big_x) - parseInt(ball.x),
+                        ball_y = parseInt(big_y) - parseInt(ball.y),
+                        dist = Math.sqrt(ball_x*ball_x + ball_y*ball_y);
+                        if(objQiuColor == playerColor){
+                            if(dist < ball.radius+r){
+                                r += balls[i].radius/10;
+                                balls.splice(i,1);
+                                i--;
+                                num_num++;
+                                num_a.innerText = "";
+                                num_a.innerText = num_num;
+                                dataBase.transaction(function(db){
+                                    db.executeSql("select t_num from u_paiH where t_name=? order by t_num desc limit 1",[getName_a_a],function(trans,rs){
+                                        console.log("bbbbbbb"+typeof rs.rows.item(0).t_num);
+                                        if(parseInt(rs.rows.item(0).t_num)<parseInt(num_num) && parseInt(num_num)<=parseInt(rs.rows.item(0).t_num)+1){
+                                            var gongxi_a = document.getElementById("gongxi");
+                                            var hl =0;
+                                            dt_a = setInterval(function(){
+                                                hl++;
+                                                gongxi_a.style.display = "block";
+                                                if(hl>=40){
+                                                    gongxi_a.style.display = "none";
+                                                    clearInterval(dt_a);
+                                                }
+                                            },100);
+                                        }
+                                    })
+                                })
+                            }
+                        }
+                        if(objQiuColor != playerColor){
+                            if(dist < ball.radius+r) {
+//                                console.log("1");
+                                clearTimeout(outObj);
+                                bigBall = [];
+                                gameOver_a.style.display = "block";
+                                onlyNum_a.innerText = "";
+                                onlyNum_a.innerText = num_num;
+                                pHang();
+                                pHang_a();
+                            }
+                        }
+                }
+            }
+            //初始化三角函数反弹小球移动
+            function updateBall(ball) {
+                ball.radians = ball.angle * Math.PI / 180;
+                ball.xunits = Math.cos(ball.radians) * ball.speed;
+                ball.yunits = Math.sin(ball.radians) * ball.speed;
+            }
+            //调用画球并移动
+            function gameLoop() {
+                outObj = setTimeout(gameLoop,50);
+                drawScreen();
+                createBigball();
+            }
+            gameLoop();
+        }
+    </script>
+</head>
+<body>
+<div style="position: absolute;top: 50px;left: 50px;">
+    <canvas id="tutorial" width="1349px" height="700px">your browser dont support canvas！</canvas>
+</div>
+<div id="numDiv"><span>分数为:</span><span id="num">0</span></div>
+<div id="gameOver">
+    <span>游戏结束</span>
+    <div id="gameOver_a">
+        <img src="img/jiangbei.png" height="80px">
+        <h2>你的分数为：<span id="onlyNum">0</span></h2>
+        <h2>你的历史最高排名是：<span>第</span><span id="historyNum">0</span><span>名</span></h2>
+    </div>
+    <div id="chongWan">
+        <h2>重  玩</h2>
+    </div>
+    <div id="tuiChu">
+        <h2>退  出</h2>
+    </div>
+</div>
+<div id="startGame">
+    <div id="gameName">
+        <span><em id="em_a">欢</em><em id="em_b">迎</em><em id="em_c">来</em><em id="em_d">到</em></span>
+        <span>《<span id="gameName_a">球球大作战</span>》</span>
+    </div>
+    <div id="guiZe">
+        <p>第一：同种颜色才能碰撞</p>
+        <p>第二：玩家球颜色每隔8秒变色</p>
+        <p>第三：小球12秒在画布上随机创建增加且增加颜色不同</p>
+    </div>
+    <input type="text" id="getName" placeholder="请输入你的游戏名">
+    <div id="letsGo" onclick="eventwindowLoaded()">
+        <h2>开 始</h2>
+    </div>
+</div>
+<div id="setName">
+    <span id="setName_a"></span>
+</div>
+<div id="gongxi">
+    <span>恭喜您！</span>
+    <span>刷新您的个人记录！</span>
+</div>
+</body>
+</html>

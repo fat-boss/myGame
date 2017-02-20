@@ -1,0 +1,50 @@
+.start {
+    width: 1366px;
+    height: 675px;
+    position: absolute;
+    background: url(../image/readyBg.jpg) 0 -400px;
+    top: 0;
+    z-index: 100;
+    overflow: hidden;
+}
+.start div {
+    position: absolute;
+    left: 170px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 20px;
+}
+.start img {
+    vertical-align: middle;
+}
+.start div:first-child {
+    top: 50px;
+}
+.start div:nth-of-type(2) {
+    top: 150px;
+}
+.start div:nth-of-type(3) {
+    top: 200px;
+}
+.start div:nth-of-type(4) {
+    top: 270px;
+}
+.start div:nth-of-type(5) {
+    top: 330px;
+}
+.start div:nth-of-type(6) {
+    top: 430px;
+}
+.start span {
+    font-size: 14px;
+    color: red
+}
+.start .span2 {
+    font-size: 16px;
+}
+.start .img2 {
+    position: absolute;
+    bottom: 126px;
+    left: 295px;
+    cursor: pointer;
+}

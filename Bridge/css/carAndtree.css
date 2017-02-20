@@ -1,0 +1,67 @@
+#start{
+    left:640px;
+    top:280px;
+    position:absolute;
+    z-index:100;
+}
+#startCanvas{
+    left:450px;
+    background-color: #a5f14f;
+    position:absolute;
+    z-index:90;
+}
+#hard1{
+    left:540px;
+    top:280px;
+    position:absolute;
+    z-index:110;
+    display: none;
+}
+#hard2{
+    left:740px;
+    top:280px;
+    position:absolute;
+    z-index:110;
+    display: none;
+}
+#endCanvas{
+    background-color: #a5f14f;
+    left:450px;
+    position: absolute;
+    z-index: 50;
+}
+#endRestart{
+    left:640px;
+    top:450px;
+    position: absolute;
+    z-index: 50;
+}
+#endStart{
+    left:550px;
+    top:450px;
+    position: absolute;
+    z-index: 50;
+}
+#endQuit{
+    left:720px;
+    top:450px;
+    position: absolute;
+    z-index:50;
+}
+#mycanvas{
+    background-color: #a5f14f;
+    left:450px;
+    position: absolute;
+    z-index: 60;
+}
+#mydun{
+    position: absolute;
+    z-index: 60;
+    left:450px;
+}
+img{
+    display: none;
+}
+#userScore{
+    opacity: 0;
+}

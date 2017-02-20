@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>碰碰球</title>
+    <link rel="stylesheet" href="css/index.css"/>
+    <link rel="stylesheet" href="css/index1.css"/>
+</head>
+<body>
+<section id="wripper">
+    <header id="gameState">
+        <h2>Main Menu</h2>
+    </header>
+    <section id="gameUI">
+        <section id="gameMenu">
+            <p><a id="playBtn" class="button" href="">Play</a></p>
+            <p><a id="introBtn" class="button" href="">Introduction</a></p>
+            <p><a id="resetBtn" class="button" href="">Restart</a></p>
+        </section>
+        <section id="gameIntro">
+            <p>Each puzzle consists of a set of balls placed on the board.
+                To solve a puzzle, you need to remove all balls(but one) from the board</p>
+            <p>You do this by "flinging" balls along a line into other balls,
+                cansing the hit balls to roll off the board</p>
+            <p>You cannot fling a ball into a neighbouring ball</p>
+            <p>Control: use your mouse select a ball</p>
+            <p>W/↑ - Move selector up</p>
+            <p>S/↓ - Move selector down</p>
+            <p>A/← - Move selector left</p>
+            <p>D/→ - Move selector right</p>
+            <p>Tips: Use the Undo/R when you get stuck</p>
+            <p><a id="playBtn2" class="button" href="">Start Now</a></p>
+        </section>
+        <section id="gameCtrl">
+            <input id="upBtn" type="button" value="↑" >
+            <input id="downBtn" type="button" value="↓" >
+            <input id="leftBtn" type="button" value="←" >
+            <input id="rightBtn" type="button" value="→" >
+        </section>
+
+        <section id="gameComplete">
+            <div id="gameEndShow">
+                <p id="scoreShow">score</p>
+                <input type="text" id="nameInput" placeholder="Please enter your name">
+                <input type="button" id="addBtn" value="Add my score" disabled="">
+                <input type="button" id="newGameBtn" value="New game">
+                <ol id="highScoreList"></ol>
+            </div>
+            <button id="nextBtn">下一步</button>
+        </section>
+    </section>
+    <canvas id="canvas" width="400" height="400">Your browser does not support Canvas.</canvas>
+    <footer>
+        <input id="menuBtn" type="button" value="Menu">
+        <div id="puzzleScore"> </div>
+        <input id="undoBtn" type="button" value="Undo">
+    </footer>
+</section>
+<section id="sore">
+    <h2>英雄榜</h2>
+    <table>
+        <tr>
+            <td>排名</td>
+            <td>姓名</td>
+            <td>分数</td>
+        </tr>
+    </table>
+</section>
+    <script src="js/jquery.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/init.js"></script>
+    <script src="js/ball.js"></script>
+</body>
+</html>

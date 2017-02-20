@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+		body {
+			overflow:hidden;
+		}
+        .screen {
+            width: 1366px;
+            height: 675px;
+            background: url(image/bg.jpg);
+            -webkit-background-size: 100% 100%;
+            background-size: 100% 100%;
+            position: relative;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            z-index: -100;
+        }
+        .mengceng {
+            width: 1366px;
+            height: 675px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -99;
+            background-color: white;
+            display: none;
+            opacity: 0.9;
+        }
+        @keyframes shanshuo {
+            from {
+                opacity: 0.9;
+            }to {
+                 opacity: 0;
+            }
+        }
+        .dragon {
+
+            position: absolute;
+            left: 0;
+            top: 310px;
+        }
+        .num {
+            position: absolute;
+            right: 2px;
+            top: 10px;
+        }
+        .score {
+            position: absolute;
+            right: 60px;
+            top: 40px;
+        }
+        .blood {
+            position: absolute;
+        }
+        .back {
+            position: absolute;
+            left: 0;
+            top: 10px;
+            cursor: pointer;
+        }
+        .exp {
+            position: absolute;
+            left: 10px;
+            height: 70px;
+            bottom: 445px;
+            transition: height .4s linear;
+            width: 31px;
+            overflow: hidden;
+        }
+        .exp-pic {
+            position: absolute;
+            bottom: 0;
+        }
+        .boom {
+            position: absolute;
+            left: 10px;
+            top: 245px;
+        }
+        .dead {
+            position: absolute;
+            top: -60px;
+            transition: top 1s linear;
+        }
+        .skill {
+            position: absolute;
+            left: 83px;
+            display: none;
+        }
+        .time {
+            position: absolute;
+            left: 550px;
+            top: 40px;
+        }
+        @keyframes levelUp {
+            0% {
+              opacity: 1
+            }
+            25% {
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 1;
+            }
+            75% {
+                opacity: 0.2;
+            }
+            100% {
+                opacity: 1;
+            }
+
+        }
+        .scoreCounted {
+            width: 217px;
+            height: 196px;
+            background: url(image/tipBg.png);
+            position: absolute;
+            left: 40%;
+            top: 30%;
+            display: none;
+            z-index: 10000;
+        }
+
+        .p1 {
+            color: black;
+            font-size: 26px;
+            margin-left: 24px;
+            font-weight: 700;
+            line-height: 36px;
+        }
+        .p2 {
+            font-size: 14px;
+            margin-left: 24px;
+            margin-top: -5px;
+            line-height: 26px;
+        }
+        .finalScore {
+            color: red;
+            font-size: 29px;
+            font-weight: 700;
+        }
+        .head {
+            margin-top: 24px;
+        }
+        .confirm {
+            position: absolute;
+            right: 26px;
+            bottom: 20px;
+            cursor: pointer;
+        }
+    </style>
+    <link rel="stylesheet" href="css/index.css"/>
+    <script type="text/javascript" src="js/startGame.js"></script>
+    <script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+</head>
+<body>
+<div class="start">
+    <div><img src="image/Help.png" alt=""/></div>
+    <div><img src="image/Help1.png" alt=""/>空格键攻击，<span>别长按</span></div>
+    <div><img src="image/Help2.png" alt=""/>伤害有延迟</div>
+    <div>开局送三个，且用且<span>珍惜</span>
+        <br/>
+        <img src="image/boom.gif" alt=""/>
+        一个格子为一个大招
+    </div>
+    <div><img src="image/exp.gif" alt=""/>此乃<span>经验瓶</span>，经验满了
+        <br/>后，宝贝龙会<span>进化</span>，终极状态会有<span>龙卷风</span>等你<span>探索</span>！
+    </div>
+    <div><span>游戏时间</span>为<span class="span2">90</span>秒哦！</div>
+    <img class="img2" src="image/start.gif" alt=""/>
+</div>
+<div class="screen">
+    <div class="mengceng"></div>
+    <img class="blood" src="image/HPMAX.png" alt=""/>
+    <img class="dragon" style="left: 0; top: 310px" src="" alt=""/>
+    <img class="dead" src="image/dead.gif" alt=""/>
+    <img class="skill" src="image/skill.gif" alt=""/>
+    <div class="time">
+        <img src="image/0.gif" alt=""/>
+        <img class="min" src="image/1.gif" alt=""/>
+        <img src="image/d.png" alt=""/>
+        <img class="sec1" src="image/3.gif" alt=""/>
+        <img class="sec2" src="image/0.gif" alt=""/>
+    </div>
+    <img class="back" src="image/back.gif" alt=""/>
+    <div class="exp"><img class="exp-pic" src="image/expFull.gif" alt=""/></div>
+    <img class="boom" src="image/boom3.png" alt=""/>
+    <img class="num" src="image/RunnerGame.gif" alt=""/>
+    <div class="score">0分</div>
+</div>
+
+
+<div class="scoreCounted">
+        <p class="p1 head">游戏结束!</p>
+        <p class="p1">您的分数为：</p>
+        <br/>
+        <p class="p2"><span class="finalScore"></span>分！，若发现BUG，</p>
+        <p class="p2">请联系：lxy</p>
+        <img class="confirm" src="image/tipY.gif" alt=""/>
+    </div>
+
+    <script type="text/javascript">
+        var crashedCount = [8,12,5,1];          //怪物血量
+        var back = document.querySelector('.back');
+            back.style.backgroundImage = 'url(image/expFull.gif)';
+        var scoreCounted = document.querySelector('.scoreCounted');         //游戏结束后的得分弹出框
+        var finalScore = document.querySelector('.finalScore');              //游戏得分弹出框显示
+        var mengceng = document.querySelector('.mengceng');                  //大招显示蒙层
+        var blood = document.querySelector('.blood');       //龙血量显示标签
+        var dead = document.querySelector('.dead');          //死亡坟墓标签
+        var scoreElement = document.querySelector('.score');   //分数标签
+        var screen = document.querySelector('.screen');     //屏幕
+        var dragon = document.querySelector('.dragon');       //龙标签
+        var boom = document.querySelector('.boom');            //能量格
+        var score = parseInt(scoreElement.innerHTML);           //统计分数
+        var skill = document.querySelector('.skill');           //技能释放标签
+        var dragonStateTimer;
+        var enemyMoveTimer;
+        var createEnemyTimer;
+        var dragonDicTimer;
+        var bulletMoveTimer;
+        var crashTimer;
+        var boxMoveTimer;
+        var boxCrashTimer;
+        var dragonCrashTimer;
+        var createBossBulletTimer;
+        var bossBulletMoveTimer;
+        var bossMoveTimer;
+        var countDownTimer;
+        var isDeadTimer;
+        var observeTimer;
+        //初始化的东西
+        var bloodCount = 3;                                 //龙血量次数  初始化为5
+        var exp = document.querySelector('.exp');               //创建经验标签
+        exp.style.height = '60px';                                 //初始化经验条的高度
+        var enemyArr = [];   //创建怪的数组
+        var bulletArr = [];  //创建子弹的数组
+        var boxArr = [];    //创建盒子数组
+        // 设置时间倒计时
+        var min = document.querySelector('.min');
+        var sec1 = document.querySelector('.sec1');
+        var sec2 = document.querySelector('.sec2');
+        var time = 90;
+        function countDown () {
+            var _sec2 = (time % 60) % 10;
+            var _sec1 = parseInt((time % 60) /10);
+            var _min = parseInt(time / 60);
+            sec1.src = 'image/' + _sec1 + '.gif';
+            sec2.src = 'image/' + _sec2 + '.gif';
+            min.src = 'image/' + _min + '.gif';
+            time--;
+            if(time == 0) {
+                stopGame();
+            }
+            if(time == 30 || time == 60) {
+                createBoss();
+                setTimeout(function(){
+                    createEnemyTimer = setInterval(createEnemy,3000);
+                },10000);
+                clearInterval(createEnemyTimer);
+            }
+        }
+        var dragonEnemyCrash = false;
+        var dragonArr = [['image/small.gif','image/small2.gif','image/small3.gif'],
+                         ['image/middle.gif','image/middle2.gif','image/middle3.gif'],
+                         ['image/big.gif','image/big2.gif','image/big3.gif'],
+                         ['image/large.gif','image/large2.gif','image/large3.gif'],
+                         ['image/final.gif','image/final2.gif','image/final3.gif']];
+        var bulletStyle = [['image/smallatt.gif','image/smallhit.gif'],
+                           ['image/middleatt.gif','image/middlehit.gif'],
+                           ['image/bigatt.gif','image/bighit.gif'],
+                           ['image/largeatt.gif','image/largehit.gif'],
+                           ['image/finalatt.gif','image/finalhit.gif']];
+        var boomArr =['image/boom0.png','image/boom1.png','image/boom2.png',
+            'image/boom3.png','image/boom4.png','image/boom5.png','image/boom6.png','image/boom7.png'] ;
+        var energy = 3;
+        var scoreArr = [3,5,2,15];       //怪分数
+        var dObj = {state:0};                  //用于判断龙的状态
+        var enemySrc = [['image/bird.gif','image/ghost.gif','image/plane.gif'],['image/birdhit.gif','image/ghosthit.gif','image/planehit.gif'],
+            ['image/birddie.gif','image/ghostdie.gif','image/planedie.gif']];
+            //怪的类别及状态；
+        var levelUp = false;             //判断是否升级
+        function dragonState() {
+            if( parseInt(exp.style.height) >= 166 && dObj.state !=4 ) {
+                dObj.state += 1;
+                dragon.style.animation= 'levelUp 3s linear forwards';
+                bloodCount = 3 + dObj.state*8;
+                exp.style.height = '60px';
+                paused();
+                setTimeout(function(){
+                    dragon.style.animation = null;
+                    huiFu()
+                },3000);
+            }
+        }
+        dragon.src = dragonArr[0][0];
+        //开始游戏
+        function startGame () {
+             scoreElement.innerHTML = '0分';
+             dragonStateTimer = setInterval(dragonState, 10);  //随时监听龙状态
+             enemyMoveTimer = setInterval(enemyMove, 50);   //怪移动
+             createEnemyTimer = setInterval(createEnemy, 3000);   //创建怪
+             dragonDicTimer = setInterval(dragonDic, 10);   //控制龙
+             bulletMoveTimer = setInterval(bulletMove, 40);   //子弹移动
+             crashTimer = setInterval(crash, 10);          //检测是否碰撞
+             boxMoveTimer = setInterval(boxMove, 50);     //盒子随机移动
+             boxCrashTimer = setInterval(boxCrash, 50);  //判断盒子是否碰撞
+             dragonCrashTimer = setInterval(dragonCrash, 50);    //判断盒子和怪碰撞
+             createBossBulletTimer = setInterval(createBossBullet, 4000);             //每2s创建boss子弹
+             bossBulletMoveTimer = setInterval(bossBulletMove, 50);                 //boss子弹移动
+             bossMoveTimer = setInterval(bossMove, 40);           //监听boss移动
+             countDownTimer = setInterval(countDown, 1000);      //倒计时，每1s执行一次
+             isDeadTimer = setInterval(function () {
+                if (bloodCount <= 0) {
+                    dead.style.top = parseInt(dragon.style.top) + 35 + 'px';
+                    screen.removeChild(dragon);
+                    screen.removeChild(blood);
+                    stopGame();
+                }
+            }, 50);                                    //监听是否死亡 ， 死亡则结束游戏
+            observeTimer = setInterval(function () {
+                blood.style.top = parseInt(dragon.style.top) - 10 + 'px';
+                if (dObj.state == 0) {
+                    blood.style.left = parseInt(dragon.style.left) + 5 + 'px';
+                    dead.style.left = parseInt(dragon.style.left) + 5 + 'px';
+                } else if (dObj.state == 1) {
+                    blood.style.left = parseInt(dragon.style.left) + 12 + 'px';
+                    dead.style.left = parseInt(dragon.style.left) + 12 + 'px';
+                } else if (dObj.state == 2) {
+                    blood.style.left = parseInt(dragon.style.left) + 25 + 'px';
+                    dead.style.left = parseInt(dragon.style.left) + 25 + 'px';
+                } else if (dObj.state == 3) {
+                    blood.style.left = parseInt(dragon.style.left) + 30 + 'px';
+                    dead.style.left = parseInt(dragon.style.left) + 30 + 'px';
+                } else if (dObj.state == 4) {
+                    blood.style.left = parseInt(dragon.style.left) + 45 + 'px';
+                    dead.style.left = parseInt(dragon.style.left) + 45 + 'px';
+                }
+
+            }, 10);   //监听血量位置  和死亡位置
+
+        }
+        //暂停所有动作
+        function paused() {
+            clearInterval(enemyMoveTimer);
+            clearInterval(createEnemyTimer);
+            clearInterval(bulletMoveTimer);
+            clearInterval(dragonDicTimer);
+            clearInterval(crashTimer);
+            clearInterval(boxMoveTimer);
+            clearInterval(dragonStateTimer);
+            clearInterval(createBossBulletTimer);
+            clearInterval(bossBulletMoveTimer);
+            clearInterval(bossMoveTimer);
+            clearInterval(countDownTimer);
+        }
+        //恢复所有动作
+        function huiFu() {
+            setTimeout(function(){
+                enemyMoveTimer = setInterval(enemyMove,50);   //怪移动
+                createEnemyTimer = setInterval(createEnemy,3000);   //创建怪
+                dragonDicTimer = setInterval(dragonDic,10);   //控制龙
+                bulletMoveTimer = setInterval(bulletMove,40);   //子弹移动
+                crashTimer = setInterval(crash,10);          //检测是否碰撞
+                boxMoveTimer = setInterval(boxMove,50);     //盒子随机移动
+                dragonStateTimer = setInterval(dragonState,10);
+                createBossBulletTimer = setInterval(createBossBullet,4000);             //每2s创建boss子弹
+                bossBulletMoveTimer = setInterval(bossBulletMove,50);                 //boss子弹移动
+                bossMoveTimer = setInterval(bossMove,40);                   //监听boss移动
+                countDownTimer = setInterval(countDown,1000);                  //倒计时
+            },500);
+        }
+        //创建怪的函数
+        function Enemy(speed) {
+            this.node = document.createElement('img');
+            this.isCrashed = false;
+            this.move = function() {
+                if(!this.isCrashed) {
+                    this.node.style.right = parseInt(this.node.style.right) + speed + 'px';
+                }else {
+                    this.node.style.right = parseInt(this.node.style.right) - speed + 'px';
+                    this.isCrashed = false;
+                }
+            };
+
+            this.crashed = false;
+        }
+        //创建怪
+        function createEnemy() {
+            var suijishu = parseInt(Math.random()*7+3);
+            var enemy = new Enemy( suijishu );
+            enemy.suiji = parseInt(Math.random()*3);    //随机怪的索引
+            var height = window.getComputedStyle(enemy.node,null).height;
+            enemy.node.src = enemySrc[0][enemy.suiji];
+            enemy.node.style.position = 'absolute';
+            enemy.node.style.right = '-40px';
+            enemy.node.style.top = parseInt(Math.random()*(675-height*2.5))+'px';
+            enemy.score = scoreArr[enemy.suiji];
+            enemy.count = crashedCount[enemy.suiji];
+            enemy.time = 20;
+            enemyArr.push(enemy);
+            screen.appendChild(enemy.node);
+        }
+        //怪的移动，一定要记住删除节点时一定要同时把数组中对应的值删除
+        function enemyMove() {
+            for(let i = 0 ; i < enemyArr.length ; i++) {
+                if(enemyArr[i].count <= 0) {
+                    enemyArr[i].time--;
+                    if(enemyArr[i].time == 19) {
+                        enemyArr[i].node.src = enemySrc[2][enemyArr[i].suiji];
+                    }else if(enemyArr[i].time == 5) {
+                        scoreElement.innerHTML = parseInt(scoreElement.innerHTML) + enemyArr[i].score + '分';
+                        exp.style.height = parseInt(exp.style.height) + (enemyArr[i].score*10-dObj.state*4) + 'px';
+                        var a = parseInt(Math.random()*4);
+                        if(a == 2 || a==3  || a==0) {
+                            createBox(enemyArr[i]);
+                        }
+
+                        enemyArr[i].node.parentNode.removeChild(enemyArr[i].node);
+                        enemyArr .splice(i,1);
+                    }
+                }else {
+                    enemyArr[i].move();
+                    if(parseInt(enemyArr[i].node.style.right) > 1366) {
+                        enemyArr[i].node.parentNode.removeChild(enemyArr[i].node);
+                        enemyArr.splice(i,1);
+                    }
+                }
+            }
+        }
+        //创建boss的模板
+        function Boss () {
+            this.node = document.createElement('img');
+            this.node.src = 'image/boss.gif';
+            this.node.style.position = 'absolute';
+            this.node.style.right = '-40px';
+            this.node.style.top = parseInt(Math.random()*453)+'px';
+            this.score = 15;                    //boss分数
+            this.count = 31 + (dObj.state+1)*5;                    //boss血量
+            this.time = 20;
+            this.right = 0;
+            this.isRight = true;
+            this.isLeft = false;
+            this.isTop = true;
+            this.isBottom = false;
+            this.top = parseInt(this.node.style.top);
+            this.isCrashed = false;
+            this.move = function() {
+                if(!this.isCrashed) {
+                    if(parseInt(this.node.style.right) >= 600) {
+                        this.isLeft = true;
+                        this.isRight = false;
+                    }
+                    if( parseInt(this.node.style.right) <= 0 ) {
+                        this.isLeft = false;
+                        this.isRight = true;
+                    }
+                    if( parseInt(this.node.style.top) <= 0 ) {
+                        this.isTop = true;
+                        this.isBottom = false;
+                    }
+                    if( parseInt(this.node.style.top) >458 ) {
+                        this.isTop = false;
+                        this.isBottom = true;
+                    }
+                    if(this.isRight) {
+                        this.node.style.right = parseInt(this.node.style.right) + 5 + 'px';
+                    }
+                    if(this.isLeft){
+                        this.node.style.right = parseInt(this.node.style.right) - 5 + 'px';
+                    }
+                    if( this.isTop ) {
+                        this.node.style.top = parseInt(this.node.style.top) + 5 + 'px';
+                    }if(this.isBottom) {
+                        this.node.style.top = parseInt(this.node.style.top) - 5 + 'px';
+                    }
+                }else {
+                    this.node.style.right = parseInt(this.node.style.right) - 5 + 'px';
+                    this.node.style.top = parseInt(this.node.style.top) - 5 + 'px';
+                    this.isCrashed = false;
+                }
+            };
+            var that = this;
+            //在boss构造函数中创建子弹构造函数模板
+            this.Bullet = function () {
+                    this.node = document.createElement('img');
+                    this.node.src = 'image/attackBall.gif';
+                    this.node.style.position = 'absolute';
+                    this.node.style.right = parseInt(that.node.style.right) + 150 + 'px';
+                    this.node.style.top = that.node.style.top;
+                    this.isCrashed = false;
+                    this.move = function() {
+                        this.node.style.right = parseInt(this.node.style.right) + 10 + 'px';
+                    };
+                screen.appendChild(this.node);
+            };
+            screen.appendChild(this.node);
+        }
+        //创建boss
+        var bossArr = [];
+        var bossBulletArr = [];
+        function createBoss () {
+            var boss = new Boss();
+            bossArr.push(boss);
+        }
+        //boss移动
+        function bossMove () {
+           for(var i = 0 ; i < bossArr.length ; i++) {
+               if(bossArr[i].count <= 0) {
+                   bossArr[i].time--;
+                   if(bossArr[i].time == 19) {
+                       bossArr[i].node.src = 'image/bossdie.gif';
+                   }else if(bossArr[i].time == -50) {
+                       scoreElement.innerHTML = parseInt(scoreElement.innerHTML) + 15 + '分';
+                       exp.style.height = parseInt(exp.style.height) + (15*5-dObj.state*2) + 'px';
+                       var a = parseInt(Math.random()*4);
+                       if(a == 2) {
+                           createBox(bossArr[i]);
+                       }
+                       bossArr[i].node.parentNode.removeChild(bossArr[i].node);
+                       bossArr .splice(i,1);
+                   }
+               }else {
+                   bossArr[i].move();
+                   if(parseInt(bossArr[i].node.style.right) > 1366) {
+                       bossArr[i].node.parentNode.removeChild(bossArr[i].node);
+                       bossArr.splice(i,1);
+                   }
+               }
+           }
+        }
+
+//        创建boss子弹
+        function createBossBullet() {
+            for(let i = 0 ; i < bossArr.length ; i++) {
+                var bossBullet = new bossArr[i].Bullet();
+                bossBulletArr.push(bossBullet);
+                bossArr[i].node.src = 'image/bossattack.gif';
+                setTimeout(function(){
+                    bossArr[i].node.src = 'image/boss.gif';
+                },1000);
+            }
+        }
+//        boss子弹移动
+        function bossBulletMove() {
+            for(let i = 0 ; i < bossBulletArr.length ; i++) {
+                if (bossBulletArr[i].isCrashed == true) {
+                    bossBulletArr[i].node.src = 'image/attackHit.gif';
+                    bossBulletArr[i].time--;
+                    if(bossBulletArr[i].time == 15) {
+                        screen.removeChild(bossBulletArr[i].node);
+                        bossBulletArr.splice(i,1)
+                    }
+                }else {
+                    bossBulletArr[i].move();
+                    if (parseInt(bossBulletArr[i].node.style.left) > 1366 ) {
+                        screen.removeChild(bossBulletArr[i].node);
+                        bossBulletArr.splice(i,1)
+                    }
+                }
+
+            }
+        }
+        //创建盒子模板
+        function Box(obj,speedLeft,speedTop) {
+            this.node = document.createElement('img');
+            this.node.src = 'image/box.gif';
+            this.node.style.position = 'absolute';
+            this.node.style.right = obj.node.style.right;
+            this.node.style.top = obj.node.style.top;
+            this.time = 20;
+            this.isTop = false;
+            this.isLeft = false;
+            this.isRight = false;
+            this.isBottom = false;
+            this.move = function() {
+                if(!this.isTop) {
+                    this.node.style.top = parseInt(this.node.style.top) + speedTop + 'px';
+                }else if(!this.isBottom) {
+                    this.node.style.top = parseInt(this.node.style.top) - speedTop + 'px';
+                }
+                if(!this.isLeft) {
+                    this.node.style.right = parseInt(this.node.style.right) - speedLeft + 'px';
+                }else if(!this.isRight) {
+                    this.node.style.right = parseInt(this.node.style.right) + speedLeft + 'px';
+                }
+            };
+            screen.appendChild(this.node);
+            this.isCrashed = false;
+        }
+        //创建盒子
+        function createBox (obj) {
+            var x = parseInt(Math.random()*6-3);
+            var y = parseInt(Math.random()*6-3);
+            var box = new Box(obj,x,y);
+            boxArr.push(box);
+        }
+        //盒子移动
+        function boxMove() {
+            for(var i = 0 ; i < boxArr.length ; i++) {
+                if(!boxArr[i].isCrashed) {
+                    boxArr[i].move();
+                    if(parseInt(boxArr[i].node.style.top) < -30 || parseInt(boxArr[i].node.style.top) > 670
+                            || parseInt(boxArr[i].node.style.right) > 1366 || parseInt(boxArr[i].node.style.right) < 0) {
+                        screen.removeChild(boxArr[i].node);
+                        boxArr.splice(i,1);
+                    }
+                }else {
+                    screen.removeChild(boxArr[i].node);
+                    boxArr.splice(i,1);
+                }
+            }
+        }
+        //吃盒子能量格涨1
+        function addEnergy() {
+//            for(let j = 0 ; j < boomArr.length ; j++) {
+//                if(boom.src == boomArr[j] && j != boomArr.length-1 ) {
+//                    boom.src = boomArr[j + 1];
+//                    break;
+//                } else if(boom.src == boomArr[j] && j == boomArr.length-1) {
+//                    boom.src = boomArr[j];
+//                    break;
+//                }
+//            }
+            if(energy==7){
+                boom.src = boomArr[7];
+            } else {
+                boom.src = boomArr[++energy];
+            }
+        }
+        //龙与盒子碰撞
+        function boxCrash() {
+            for(var i = 0 ; i < boxArr.length ; i++ ){
+                var dragonL = parseInt(dragon.style.left);
+                var boxR = parseInt(boxArr[i].node.style.right);
+                var dragonT = parseInt(dragon.style.top);
+                var boxT = parseInt(boxArr[i].node.style.top);
+                var dragonW = parseInt(window.getComputedStyle(dragon,null).width);
+                var boxW = parseInt(window.getComputedStyle(boxArr[i].node,null).width);
+                var bulletH = parseInt(window.getComputedStyle(dragon,null).height);
+                var boxH = parseInt(window.getComputedStyle(boxArr[i].node,null).height);
+                if(dragonL+boxR >= 1366-(dragonW+boxW) && dragonL+boxR < 1366 &&
+                        Math.abs(dragonT-boxT) <= Math.max(boxH,bulletH) && boxArr[i].isCrashed == false) {
+                    boxArr[i].isCrashed = true;
+                    addEnergy();
+                    time+=2;
+                }
+            }
+        }
+        //创建子弹的函数
+        function Bullet() {
+            this.node = document.createElement('img');
+            screen.appendChild(this.node);
+            this.time = 20;
+            this.move = function() {
+                this.node.style.left = parseInt(this.node.style.left) + 20 + 'px';
+            };
+            this.isCrashed = false;
+        }
+        //创建子弹
+        function bulletCreate() {
+            var bullet = new Bullet();
+            bullet.node.src = bulletStyle[dObj.state][0];
+            bullet.node.style.position = 'absolute';
+            var dragonWidth = parseInt(window.getComputedStyle(dragon,null).width);
+            var dragonHeight = parseInt(window.getComputedStyle(dragon,null).height);
+            bullet.node.style.left = parseInt(dragon.style.left) + dragonWidth + 'px';
+            bullet.node.style.top = parseInt(dragon.style.top) + dragonHeight*2/3 + 'px';
+            screen.appendChild(bullet.node);
+            bulletArr.push(bullet);
+        }
+        //子弹的移动函数
+        function bulletMove() {
+            for(let i = 0 ; i < bulletArr.length ; i++) {
+                if (bulletArr[i].isCrashed == true) {
+                    bulletArr[i].node.src = bulletStyle[dObj.state][1];
+                    bulletArr[i].time--;
+                    if(bulletArr[i].time == 15) {
+                        screen.removeChild(bulletArr[i].node);
+                        bulletArr.splice(i,1)
+                    }
+                }else {
+                    bulletArr[i].move();
+                    if (parseInt(bulletArr[i].node.style.left) > 1366 ) {
+                        screen.removeChild(bulletArr[i].node);
+                        bulletArr.splice(i,1)
+                    }
+                }
+            }
+        }
+        //判断子弹和怪是否碰撞
+        //判断子弹和boss是否碰撞
+        function crash () {
+            for(let i = 0 ; i < bulletArr.length ; i++) {
+                var bulletL = parseInt(bulletArr[i].node.style.left);
+                var bulletT = parseInt(bulletArr[i].node.style.top);
+                var bulletW = parseInt(window.getComputedStyle(bulletArr[i].node,null).width);
+                var bulletH = parseInt(window.getComputedStyle(bulletArr[i].node,null).height);
+                for(let j = 0 ; j < enemyArr.length ; j++) {
+                    var enemyR = parseInt(enemyArr[j].node.style.right);
+                    var enemyT = parseInt(enemyArr[j].node.style.top);
+                    var enemyW = parseInt(window.getComputedStyle(enemyArr[j].node,null).width);
+                    var enemyH = parseInt(window.getComputedStyle(enemyArr[j].node,null).height);
+                    if(bulletL+enemyR >= 1366-(bulletW+enemyW) && bulletL+enemyR < 1366 &&
+                    Math.abs(bulletT-enemyT) <= Math.max(enemyH,bulletH) && bulletArr[i].isCrashed == false && enemyArr[j].count>0) {
+                        //此为成功判断碰撞
+                        bulletArr[i].isCrashed = true;
+                        enemyArr[j].count = enemyArr[j].count - (dObj.state+2);
+                        enemyArr[j].isCrashed = true;
+                        if(enemyArr[j].count>0){
+                            enemyArr[j].node.src = enemySrc[1][enemyArr[j].suiji];
+                            setTimeout(function(){
+                                enemyArr[j].node.src = enemySrc[0][enemyArr[j].suiji];
+                            },300);
+                        }
+                    }
+                }
+                for(let k = 0 ; k < bossArr.length ; k++) {
+                    var bossR = parseInt(bossArr[k].node.style.right);
+                    var bossT = parseInt(bossArr[k].node.style.top);
+                    var bossW = parseInt(window.getComputedStyle(bossArr[k].node,null).width);
+                    var bossH = parseInt(window.getComputedStyle(bossArr[k].node,null).height);
+                    if(bulletL+bossR >= 1366-(bulletW+bossW) && bulletL+bossR < 1366 &&
+                            Math.abs(bulletT-bossT) <= Math.max(bulletH,bossH) && bulletArr[i].isCrashed == false /*&& bulletArr[k].count>0*/) {
+                        //此为成功判断碰撞
+                        bulletArr[i].isCrashed = true;
+                        bossArr[k].count = bossArr[k].count - (dObj.state+1);
+                        bossArr[k].isCrashed = true;
+                        console.log(bossArr[k].count);
+                        if(bossArr[k].count>0){
+                            bossArr[k].node.src = 'image/bosshit.gif';
+                            setTimeout(function(){
+                                bossArr[k].node.src = 'image/boss.gif';
+                            },300);
+                        }
+
+                    }
+                }
+
+            }
+        }
+        //判断龙与怪的碰撞
+        //判断龙与boss子弹的碰撞
+        //判断龙与boss碰撞
+        function dragonCrash() {
+            var dragonL = parseInt(dragon.style.left);
+            var dragonT = parseInt(dragon.style.top);
+            var dragonW = parseInt(window.getComputedStyle(dragon,null).width);
+            var dragonH = parseInt(window.getComputedStyle(dragon,null).height);
+            for(let i = 0 ; i < enemyArr.length ; i++ ){
+                var enemyR = parseInt(enemyArr[i].node.style.right);
+                var enemyT = parseInt(enemyArr[i].node.style.top);
+                var enemyW = parseInt(window.getComputedStyle(enemyArr[i].node,null).width);
+                var enemyH = parseInt(window.getComputedStyle(enemyArr[i].node,null).height);
+                if(dragonL+enemyR >= 1366-(dragonW+enemyW) && dragonL+enemyR < 1366 &&
+                        Math.abs(dragonT-enemyT) <= Math.max(enemyH,dragonH)  && enemyArr[i].count > 0  ) {
+                    bloodCount -= enemyArr[i].score;
+                   enemyArr[i].count = 0;
+                }
+            }
+            for(let j = 0 ; j < bossBulletArr.length ; j++ ){
+                var bossBulletR = parseInt(bossBulletArr[j].node.style.right);
+                var bossBulletT = parseInt(bossBulletArr[j].node.style.top);
+                var bossBulletW = parseInt(window.getComputedStyle(bossBulletArr[j].node,null).width);
+                var bossBulletH = parseInt(window.getComputedStyle(bossBulletArr[j].node,null).height);
+                if(dragonL+bossBulletR >= 1366-(dragonW+bossBulletW) && dragonL+bossBulletR < 1366 &&
+                        Math.abs(dragonT-bossBulletT) <= Math.max(bossBulletH,dragonH)  && bossBulletArr[j].isCrashed == false  ) {
+                    bossBulletArr[j].isCrashed = true;
+                    bloodCount -= 16;
+                    bossBulletArr[j].node.src = 'image/attackHit.gif';
+                    setTimeout(function(){
+                        screen.removeChild(bossBulletArr[j].node);
+                        bossBulletArr.splice(j,1) ;
+                    },300);
+
+                }
+            }
+            for(let k = 0 ; k < bossArr.length ; k++ ){
+                var bossR = parseInt(bossArr[k].node.style.right);
+                var bossT = parseInt(bossArr[k].node.style.top);
+                var bossW = parseInt(window.getComputedStyle(bossArr[k].node,null).width);
+                var bossH = parseInt(window.getComputedStyle(bossArr[k].node,null).height);
+                if(dragonL+bossR >= 1366-(dragonW+bossW) && dragonL+enemyR < 1366 &&
+                        Math.abs(dragonT-bossT) <= Math.max(bossH,dragonH) ) {
+                    bloodCount -= 100;
+                }
+            }
+        }
+        //控制龙方向的键盘监听事件
+        var bulletTimer;
+        var shootCount = 0;
+        var direction = {left:false,right:false,top:false,bottom:false,attack:false};
+        window.addEventListener('keydown',function(e){
+            // keycode 37 = Left
+            // keycode 38 = Up
+            // keycode 39 = Right
+            // keycode 40 = Down
+//            32
+
+            var e = e || window.event;
+            if(e.keyCode == 13 && energy==7) {
+                skill.style.display = 'block';
+                paused();
+                mengceng.style.display = 'block';
+                mengceng.style.animation = 'shanshuo 3s linear forwards';
+                setTimeout(function(){
+                    huiFu();
+                    mengceng.style.display = 'none';
+                    mengceng.style.animation = null;
+                    for(var i = 0 ; i < enemyArr.length ; i++) {
+                        enemyArr[i].count -= 12 ;
+                    }
+                    for(var j = 0 ; j < bossArr.length ; j++) {
+                        bossArr[j].count -=12 ;
+                    }
+                    skill.style.display = 'none';
+                    boom.src = boomArr[0];
+                    energy = 0;
+                },3000);
+            }
+            switch (e.keyCode) {
+                case 37: direction.left = true;
+                    dragon.src = dragonArr[dObj.state][2];
+                    break;
+                case 38: direction.top = true;
+                    dragon.src = dragonArr[dObj.state][2];
+                    break;
+                case 39: direction.right = true;
+                    dragon.src = dragonArr[dObj.state][2];
+                    break;
+                case 40: direction.bottom = true;
+                    dragon.src = dragonArr[dObj.state][2];
+                    break;
+                case 32:
+                    direction.attack = true;
+
+                    break;
+            }
+        },false);
+        window.addEventListener('keyup',function(){
+            direction.left = false;
+            direction.right = false;
+            direction.top = false;
+            direction.bottom = false;
+            direction.attack = false;
+        },false);
+        var isAttacking = false;
+        var firstAttack = true;
+        var attackTimeout;
+        function dragonDic() {
+            if(direction.left) {
+                dragon.style.left = parseInt(dragon.style.left) - 5 + 'px';
+                if(parseInt(dragon.style.left) <= 0 ) {
+                    dragon.style.left = 0;
+                }
+            }
+            if(direction.top) {
+                dragon.style.top = parseInt(dragon.style.top) - 5 + 'px';
+                if(parseInt(dragon.style.top) <= 0 ) {
+                    dragon.style.top = 0;
+                }
+            }
+            if(direction.right) {
+                dragon.style.left = parseInt(dragon.style.left) + 5 + 'px';
+                if(parseInt(dragon.style.left) >= 1312 ) {
+                    dragon.style.left = 1312 + 'px';
+                }
+            }
+            if(direction.bottom) {
+                dragon.style.top = parseInt(dragon.style.top) + 5 + 'px';
+                if(parseInt(dragon.style.top) >= 621 ) {
+                    dragon.style.top = 621 + 'px';
+                }
+            }
+            if(direction.attack){
+//                dragon.src = dragonArr[dObj.state][1];
+//                clearTimeout(bulletTimer);
+//                bulletTimer2 = setTimeout(function(){
+//                    bulletCreate();
+//                },300);
+//                bulletTimer = setTimeout(function(){
+//                    dragon.src = dragonArr[dObj.state][2];
+//                },600);
+                isAttacking = true;
+                if(!firstAttack) {
+                    return;
+                }
+                if(isAttacking && firstAttack){
+                    dragon.src = dragonArr[dObj.state][1];
+                    firstAttack = false;
+                    bulletTimer2 = setTimeout(function(){
+                    bulletCreate();
+                },300);
+                }
+                attackTimeout = setTimeout(function(){
+                    isAttacking = false;
+                    firstAttack = true;
+                    dragon.src = dragonArr[dObj.state][2];
+                },650);
+            }
+        }
+        //结束游戏
+        function stopGame() {
+            clearInterval(dragonStateTimer);
+            clearInterval(enemyMoveTimer);
+            clearInterval(createEnemyTimer);
+            clearInterval(dragonDicTimer);
+            clearInterval(bulletMoveTimer);
+            clearInterval(crashTimer);
+            clearInterval(boxMoveTimer);
+            clearInterval(boxCrashTimer);
+            clearInterval(dragonCrashTimer);
+            clearInterval(createBossBulletTimer);
+            clearInterval(bossBulletMoveTimer);
+            clearInterval(bossMoveTimer);
+            clearInterval(countDownTimer);
+            clearInterval(isDeadTimer);
+            clearInterval(observeTimer);
+            scoreCounted.style.display = 'block';
+            finalScore.innerHTML = parseInt(scoreElement.innerHTML);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<title>坦克大战</title>
+	<link rel="stylesheet" type="text/css" href="css/font-awesome.css" />
+	<link rel="stylesheet" type="text/css" href="css/main.css" />
+	<style type="text/css">
+		#canvasSection canvas{
+			position:absolute;
+		}
+	</style>
+</head>
+<body>
+	<section class="container">
+		<header><h3>操作说明：玩家1：wasd上左下右，space射击；玩家2：方向键，enter射击。n下一关，p上一关。</h3></header>
+		<section id="grade">
+			<header>排行榜</header>
+			<p>top1:<span></span></p>
+			<p>top2:<span></span></p>
+			<p>top3:<span></span></p>
+		</section>
+		<section class="main">
+				<section id="canvasSection" >
+					<!-- 画墙 -->
+					<canvas id="wallCanvas" ></canvas> 
+					<!-- 画坦克 -->
+					<canvas id="tankCanvas" ></canvas>
+					<!-- 画草地 -->
+					<canvas id="grassCanvas" ></canvas>
+					<!-- 结束的画布 -->
+					<canvas id="overCanvas" ></canvas> 
+					<!-- 切换幕布画布 -->
+					<canvas id="stageCanvas" ></canvas>
+				</section>
+		</section>
+				
+	</section>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/Helper.js"></script>
+	<script src="js/keyboard.js"></script>
+	<script src="js/const.js"></script>
+	<script src="js/level.js"></script>
+	<script src="js/crackAnimation.js"></script>
+	<script src="js/prop.js"></script>
+	<script src="js/bullet.js"></script>
+	<script src="js/tank.js"></script>
+	<script src="js/num.js"></script>
+	<script src="js/menu.js"></script>
+	<script src="js/map.js"></script>
+	<script src="js/Collision.js"></script>
+	<script src="js/stage.js"></script>
+	<script src="js/db.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>
